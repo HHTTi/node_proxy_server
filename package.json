@@ -5,14 +5,14 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node app.js"
   },
-  "author": "",
+  "author": "liu",
   "license": "ISC",
   "devDependencies": {
-    "http-proxy": "^1.18.1"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "http-proxy": "^1.18.1"
   }
 }

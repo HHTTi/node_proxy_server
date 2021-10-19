@@ -1,21 +1,19 @@
-var path = require("path");
-var httpProxy = require("http-proxy");
-var express = require("express");
-var app = express();
+const path = require("path");
+const httpProxy = require("http-proxy");
+const express = require("express");
+const { rootPath,port,proxys } = require('./proxy-conf')
 
-var rootPath = path.join(__dirname, "../yhec-h5");
+const app = express();
 
-var port = 8060; // 指定服务端口
 // var filterFields = ["/app","/file","/reported","/fom"]; // 过滤请求路径关键字 type: array
 // const target1 = 'http://open-dev.csleasing.com.cn:31304'
-const target1 = 'http://10.18.138.228:8080'
 
-var filterFields = [
-  { key:'/app', target: target1},
-  { key:'/file', target: target1},
-  { key:'/reported', target: target1},
-  { key:'/fom', target:'https://car.csleasing.com.cn:8000'},
-]; // 过滤请求路径关键字 type: array
+// var filterFields = [
+//   { key:'/app', target: target1},
+//   { key:'/file', target: target1},
+//   { key:'/reported', target: target1},
+//   { key:'/fom', target:'https://car.csleasing.com.cn:8000'},
+// ]; // 过滤请求路径关键字 type: array
 
 var proxy = httpProxy.createProxyServer({
   changeOrigin: true,
@@ -39,8 +37,8 @@ proxy.on("error", function (err, req, res) {
 // 处理静态资源
 app.use(express.static(rootPath));
 
-// 只对 filterFields 数组元素有的字段请求，挂载此中间件
-filterFields.forEach(function (field) {
+// 只对 proxys 数组元素有的字段请求，挂载此中间件
+proxys.forEach(function (field) {
   app.use(field.key, function (req, res, next) {
 
     req.url = field.key + req.url;
@@ -53,4 +51,4 @@ filterFields.forEach(function (field) {
 
 app.listen(port);
 
-console.log("Server runing at : localhost:" + port + "/eCar/register.html")
+console.log("Success ! Server runing at : localhost:" + port)
